@@ -1,0 +1,7 @@
+[dependencies]
+docker = { optional = true }
+
+[files]
+
+[files."client/Dockerfile"]
+if = "docker"
