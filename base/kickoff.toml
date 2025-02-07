@@ -1,0 +1,3 @@
+[settings]
+django_apps = { type = "list[str]" }
+django_middleware = { type = "list[str]" }

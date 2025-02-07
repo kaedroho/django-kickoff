@@ -30,7 +30,9 @@ ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(",")
 
 INSTALLED_APPS = [
     "__projectname__",
-    "django_bridge",
+    {% for app in django_apps -%}
+    "{{ app }}",
+    {%- endfor %}
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -48,6 +50,9 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django_bridge.middleware.DjangoBridgeMiddleware",
+    {% for middleware in django_middleware -%}
+    "{{ middleware }}",
+    {%- endfor %}
 ]
 
 ROOT_URLCONF = "__projectname__.urls"
@@ -125,15 +130,6 @@ if os.environ.get("VITE_BUNDLE_DIR"):
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
-# Django Bridge settings
-
-DJANGO_BRIDGE = {
-    "VITE_BUNDLE_DIR": os.environ.get("VITE_BUNDLE_DIR"),
-    "VITE_DEVSERVER_URL": os.environ.get(
-        "VITE_DEVSERVER_URL", "http://localhost:5173/static"
-    ),
-    "CONTEXT_PROVIDERS": {
-        "csrf_token": "django.middleware.csrf.get_token",
-    },
-}
+{% for setting in django_settings -%}
+{{ django_settings }}
+{%- endfor %}

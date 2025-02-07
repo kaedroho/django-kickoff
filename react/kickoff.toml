@@ -1,6 +1,27 @@
 [dependencies]
 docker = { optional = true }
 
+[settings.base]
+django_apps = ["django_bridge"]
+django_middleware = ["django_bridge.middleware.DjangoBridgeMiddleware"]
+django_settings = ["""
+# Django Bridge settings
+
+DJANGO_BRIDGE = {
+    "VITE_BUNDLE_DIR": os.environ.get("VITE_BUNDLE_DIR"),
+    "VITE_DEVSERVER_URL": os.environ.get(
+        "VITE_DEVSERVER_URL", "http://localhost:5173/static"
+    ),
+    "CONTEXT_PROVIDERS": {
+        "csrf_token": "django.middleware.csrf.get_token",
+    },
+}
+
+
+"""]
+urls_imports = ["from .views import home"]
+urlpatterns = ["path('', home, name='home')"]
+
 [files]
 
 [files."client/Dockerfile"]
